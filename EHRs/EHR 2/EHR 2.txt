@@ -1,0 +1,21 @@
+EHR 2
+Patient ID: P002
+Name: Maria Lopez
+Age: 42
+Sex: Female
+Chief Complaint: Sudden onset of seizures.
+History of Present Illness:
+Experienced her first seizure two weeks ago, followed by a second episode five days later.
+Reports severe fatigue, dizziness, and occasional double vision.
+Complains of worsening headaches, especially in the mornings.
+Family History:
+No significant family history of neurological disorders.
+Social History:
+Non-smoker, occasional wine drinker.
+Works as an elementary school teacher.
+Physical Examination:
+Positive for papilledema on fundoscopy.
+Unsteady gait noted during balance testing.
+Lab Results:
+CBC shows mild leukocytosis (WBC: 12.3 × 10³/µL).
+Slightly elevated lactate levels: 2.8 mmol/L (normal: 0.5–2.2).

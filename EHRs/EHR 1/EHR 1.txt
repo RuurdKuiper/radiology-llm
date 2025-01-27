@@ -1,0 +1,23 @@
+EHR 1
+Patient ID: P001
+Name: John Thompson
+Age: 58
+Sex: Male
+Chief Complaint: Persistent headaches and occasional nausea.
+History of Present Illness:
+Gradually worsening headaches over the past six months.
+Reports difficulty concentrating and recent forgetfulness.
+Noticed mild numbness in the left arm occasionally.
+Family History:
+Father: Stroke at age 62.
+Mother: Alzheimer’s disease.
+Social History:
+Smokes 10 cigarettes/day for 25 years.
+Moderate alcohol consumption.
+Works as a construction manager.
+Physical Examination:
+Neurological exam reveals mild left-sided weakness and delayed reflexes.
+Slightly slurred speech noted during consultation.
+Lab Results:
+Normal CBC and electrolytes.
+Elevated ESR: 42 mm/hr (normal <20).

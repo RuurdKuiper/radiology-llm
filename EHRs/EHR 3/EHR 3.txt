@@ -1,0 +1,22 @@
+EHR 3
+Patient ID: P003
+Name: David Reed
+Age: 35
+Sex: Male
+Chief Complaint: Episodes of blurred vision and worsening coordination.
+History of Present Illness:
+Complaints of intermittent blurry vision over the last month.
+Reports difficulty with fine motor tasks, such as buttoning shirts.
+Recent episodes of nausea and balance issues.
+Family History:
+Brother: Diagnosed with multiple sclerosis.
+Father: Died from glioblastoma at age 58.
+Social History:
+Non-smoker, occasional recreational cannabis use.
+Works as a software developer, often sedentary.
+Physical Examination:
+Positive Romberg test.
+Increased deep tendon reflexes in the lower extremities.
+Lab Results:
+Normal routine bloodwork.
+Elevated protein levels in cerebrospinal fluid from a recent lumbar puncture.

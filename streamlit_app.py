@@ -1,56 +1,78 @@
+import os
 import streamlit as st
 from openai import OpenAI
+from utils import load_ehr_data, load_images, load_full_images, display_sidebar_content
 
-# Show title and description.
-st.title("💬 Chatbot")
-st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
-)
+# Constants for the Hugging Face Inference Endpoint
+BASE_URL = "https://qi9uxbfumzrk421l.us-east4.gcp.endpoints.huggingface.cloud/v1/"
+API_KEY = st.secrets["HUGGINGFACE_API_KEY"]  # Retrieve API key from secrets.toml
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+# Initialize the OpenAI client
+client = OpenAI(base_url=BASE_URL, api_key=API_KEY)
 
-    # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+# Streamlit App
+def main():
+    st.set_page_config(layout="wide")
+    st.title("Radiologist's Companion")
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    # Get list of available patient folders
+    ehr_root = "EHRs"
+    patient_folders = [folder for folder in os.listdir(ehr_root) if folder.startswith("EHR") and os.path.isdir(os.path.join(ehr_root, folder))]
+    patient_ids = sorted([folder.split(" ")[1] for folder in patient_folders])
 
-    # Display the existing chat messages via `st.chat_message`.
-    for message in st.session_state.messages:
+    # Sidebar for Patient Selection
+    patient_id = st.sidebar.selectbox("Select Patient", options=patient_ids, index=0)
+
+    # Load EHR Data and Images
+    ehr_data = load_ehr_data(patient_id)
+    available_images, images = load_images(patient_id)
+
+    # Display Sidebar Content
+    display_sidebar_content(ehr_data, images)
+
+    # Initialize session state for conversation history per patient
+    if "patient_chats" not in st.session_state:
+        st.session_state.patient_chats = {}
+
+    if patient_id not in st.session_state.patient_chats:
+        st.session_state.patient_chats[patient_id] = []
+
+    # Main Content: Chat
+    st.subheader("Chat")
+    messages = st.session_state.patient_chats[patient_id]
+
+    # Display existing chat messages
+    for message in messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
-
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
+    # Accept user input and stream assistant response
+    if prompt := st.chat_input("Enter your query:"):
+        # Add user message to the chat history
+        messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Generate a response using the OpenAI API.
-        stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
+        # Prepare full conversation with system context
+        full_messages = [{"role": "system", "content": "You are a radiologist's companion, here to answer questions about the patient and assist in the diagnosis if asked to do so."}]
+        if ehr_data:
+            full_messages.append({"role": "system", "content": f"Patient Information: {ehr_data}"})
+        if available_images:
+            full_messages.append({"role": "system", "content": f"Available image types for the patient: {', '.join(available_images)}."})
+        full_messages.extend(messages)
 
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
+        # Stream assistant response
         with st.chat_message("assistant"):
+            stream = client.chat.completions.create(
+                model="tgi",
+                messages=full_messages,
+                max_tokens=300,
+                stream=True
+            )
             response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            
+        # Add assistant message to the chat history
+        messages.append({"role": "assistant", "content": response})
+
+if __name__ == "__main__":
+    main()
