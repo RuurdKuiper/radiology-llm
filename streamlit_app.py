@@ -1,7 +1,8 @@
 import os
 import streamlit as st
 from openai import OpenAI
-from utils import load_ehr_data, load_images, load_full_images, display_sidebar_content
+from utils.ehr import load_ehr_data
+from utils.images import load_images, display_sidebar_content
 
 # Constants for the Hugging Face Inference Endpoint
 BASE_URL = "https://qi9uxbfumzrk421l.us-east4.gcp.endpoints.huggingface.cloud/v1/"
@@ -70,7 +71,7 @@ def main():
                 stream=True
             )
             response = st.write_stream(stream)
-            
+        
         # Add assistant message to the chat history
         messages.append({"role": "assistant", "content": response})
 

@@ -1,23 +1,119 @@
-EHR 1
-Patient ID: P001
-Name: John Thompson
-Age: 58
-Sex: Male
-Chief Complaint: Persistent headaches and occasional nausea.
-History of Present Illness:
-Gradually worsening headaches over the past six months.
-Reports difficulty concentrating and recent forgetfulness.
-Noticed mild numbness in the left arm occasionally.
-Family History:
-Father: Stroke at age 62.
-Mother: Alzheimer’s disease.
-Social History:
-Smokes 10 cigarettes/day for 25 years.
-Moderate alcohol consumption.
-Works as a construction manager.
-Physical Examination:
-Neurological exam reveals mild left-sided weakness and delayed reflexes.
-Slightly slurred speech noted during consultation.
-Lab Results:
-Normal CBC and electrolytes.
-Elevated ESR: 42 mm/hr (normal <20).
+Patient ID: 12345
+Name: John Doe
+DOB: March 12, 1972
+Gender: Male
+Primary Care Physician: Dr. Emily Carter
+
+1. Initial Visit - April 15, 2005
+Reason for Visit: Annual physical exam
+Notes:
+
+Patient is a 33-year-old male presenting for a routine annual exam.
+Reports occasional mild headaches, attributed to work-related stress.
+Denies vision changes, dizziness, or nausea.
+History of seasonal allergies, well-controlled with loratadine.
+Physical exam unremarkable; no neurological deficits noted.
+Plan:
+Continue current allergy medication.
+Lifestyle advice: reduce stress, improve work-life balance.
+2. Specialist Visit - September 12, 2008
+Department: Gastroenterology
+Reason for Referral: Persistent acid reflux and heartburn
+Notes:
+
+Patient reports a 6-month history of acid reflux, worse at night.
+Endoscopy revealed mild esophagitis; no ulcers or strictures.
+Reports intermittent fatigue but attributes it to long work hours.
+Neurological symptoms: None reported.
+Plan:
+Prescribed omeprazole 20 mg daily.
+Lifestyle modifications: Avoid late-night meals, reduce caffeine intake.
+3. Emergency Room Visit - January 25, 2012
+Reason for Visit: Minor head trauma following a slip on ice
+Notes:
+
+Patient slipped and hit the back of his head on concrete.
+Reports dizziness and mild headache but no loss of consciousness.
+CT scan: No evidence of intracranial bleeding or skull fracture.
+Neurological exam: Normal reflexes, no focal deficits.
+Plan:
+Discharged with advice to monitor for worsening symptoms (e.g., confusion, vomiting).
+Follow-up with PCP if headaches persist.
+4. Neurology Consultation - November 17, 2014
+Reason for Referral: Recurrent migraines
+Notes:
+
+Reports migraines occurring 2-3 times/month, lasting several hours, associated with nausea and light sensitivity.
+Triggers include stress and sleep deprivation.
+Neurological exam: Normal gait, no motor or sensory deficits.
+Family history: Father diagnosed with Parkinson’s disease at age 70.
+Plan:
+Prescribed sumatriptan as needed for acute migraines.
+Advised regular sleep schedule and stress management.
+5. Cardiology Follow-Up - August 8, 2017
+Reason for Visit: Elevated cholesterol levels
+Notes:
+
+Patient reports intermittent fatigue but denies chest pain or palpitations.
+Blood work: LDL elevated at 160 mg/dL; triglycerides normal.
+Reports occasional "foggy thinking" but attributes it to poor sleep.
+Neurological symptoms: None reported.
+Plan:
+Started on atorvastatin 10 mg daily.
+Advised to increase physical activity.
+6. Primary Care Visit - June 10, 2019
+Reason for Visit: Generalized fatigue and worsening memory
+Notes:
+
+Patient reports feeling “sluggish” and “off” for the past year.
+Memory lapses noted: forgetting recent conversations and misplacing items.
+Wife expressed concern over increasing forgetfulness, especially during conversations.
+Denies mood changes or depression but reports difficulty concentrating.
+Neurological exam: Slight delay in verbal recall but otherwise unremarkable.
+Plan:
+Ordered basic labs (CBC, TSH, B12).
+Referred to neurology for cognitive evaluation.
+7. Neurology Follow-Up - September 20, 2019
+Reason for Visit: Cognitive complaints
+Notes:
+
+Patient underwent cognitive testing: borderline low scores on verbal memory and executive function tasks.
+Reports more frequent migraines, lasting longer than before.
+Brain MRI ordered: Mild periventricular white matter hyperintensities, nonspecific but concerning for microvascular changes.
+Plan:
+Started low-dose aspirin 81 mg daily for suspected vascular contributions.
+Recommended follow-up MRI in 12 months to monitor changes.
+8. Emergency Room Visit - February 2, 2021
+Reason for Visit: Sudden onset weakness and confusion
+Notes:
+
+Brought in by family after noticing slurred speech and difficulty walking.
+Symptoms resolved by the time of arrival. Suspected transient ischemic attack (TIA).
+Brain MRI: Mild progression of white matter hyperintensities; no acute findings.
+Neurological exam: Mildly reduced coordination on rapid alternating movements.
+Plan:
+Referred to vascular neurology for further workup.
+Started on clopidogrel in addition to aspirin.
+9. Vascular Neurology Follow-Up - March 15, 2021
+Reason for Visit: TIA evaluation
+Notes:
+
+Family reports increasing personality changes: irritability and apathy.
+Patient acknowledges “feeling different” but denies depression.
+Neuropsychological testing: Worsening executive function and delayed recall.
+MRI findings suggest chronic small vessel ischemic disease, with no acute infarcts.
+Differential diagnosis includes vascular dementia, early-onset neurodegenerative disorder (consider Alzheimer's or Parkinson’s with cognitive impairment).
+Plan:
+Recommended lifestyle changes (smoking cessation, Mediterranean diet).
+Scheduled further workup, including genetic testing for familial neurodegenerative disorders.
+10. PCP Visit - October 4, 2022
+Reason for Visit: Continued cognitive decline and falls
+Notes:
+
+Patient reports 3 falls in the past 6 months, all attributed to "tripping over nothing."
+Increasing forgetfulness: Family reports repeating questions multiple times in a single day.
+Neurological exam: Mild bradykinesia, subtle resting tremor in right hand.
+MRI: Progression of white matter changes and mild cortical atrophy.
+Plan:
+Suspected mixed etiology: Vascular contributions with possible early Parkinsonism.
+Referred to movement disorders specialist for further evaluation.
