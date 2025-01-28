@@ -36,9 +36,12 @@ def segment_organ(file_path, organ_name):
         # ax.axis("off")
         # st.pyplot(fig)
 
-        return f"Segmentation for {organ_name} performed successfully.", scan, segmentation
+        print(f"Segmentation for {organ_name} performed successfully.")
+        message = f"Segmentation for {organ_name} performed successfully."
+        return message, scan, segmentation
     except Exception as e:
-        return f"Error during segmentation: {str(e)}", None, None
+        message = f"Error during segmentation: {str(e)}"
+        return message, None, None
 
 
 def display_interactive_viewer(scan, segmentation, scan_path, organ_name):
@@ -64,12 +67,14 @@ def display_interactive_viewer(scan, segmentation, scan_path, organ_name):
         # Display the selected slice
         slice_data = scan[:, :, selected_slice]
         slice_data = (slice_data - np.min(slice_data)) / (np.max(slice_data) - np.min(slice_data))
+        slice_data = np.rot90(slice_data)
 
         st.write(f"Displaying slice {selected_slice}/{num_slices - 1}")
         fig, ax = plt.subplots()
         ax.imshow(slice_data, cmap="gray")
         if segmentation is not None:
             seg_slice = segmentation[:, :, selected_slice]
+            seg_slice = np.rot90(seg_slice)
             ax.imshow(seg_slice, cmap="viridis", alpha=0.5)
         ax.axis("off")
         st.pyplot(fig)
