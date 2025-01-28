@@ -29,7 +29,12 @@ def main():
 
     # Sidebar for Patient Selection
     patient_id = st.sidebar.selectbox("Select Patient", options=patient_ids, index=0)
-
+    # Reset segmentation state when switching patients
+    if st.session_state.get("previous_patient_id") != patient_id:
+        st.session_state["previous_patient_id"] = patient_id
+        for key in ["current_scan", "current_segmentation", "current_scan_path", "current_organ"]:
+            st.session_state.pop(key, None)
+            
     # Load EHR Data and Images
     ehr_data = load_ehr_data(patient_id)
     available_images, images = load_images(patient_id)
@@ -131,15 +136,6 @@ def main():
                         st.session_state["current_segmentation"] = segmentation
                         st.session_state["current_scan_path"] = scan_path
                         st.session_state["current_organ"] = organ
-
-                        # # Sidebar container to force consistent placement
-                        # with viewer_container:
-                        #     display_interactive_viewer(
-                        #         st.session_state["current_scan"],
-                        #         st.session_state["current_segmentation"],
-                        #         st.session_state["current_scan_path"],
-                        #         st.session_state["current_organ"],
-                        #     )
 
                         messages.append({"role": "assistant", "content": overlay_message})
                         with st.chat_message("assistant"):
