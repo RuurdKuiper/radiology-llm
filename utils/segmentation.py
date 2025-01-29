@@ -16,7 +16,7 @@ def segment_organ(file_path, organ_name):
     segmentation_file = os.path.join(segmentation_folder, f"{organ_name}.nii.gz")
 
     if not os.path.exists(segmentation_file):
-        return False, f"Segmentation for {organ_name} not found."
+        return f"Segmentation for {organ_name} not found. The LLM may have called the function incorrectly.", None, None
 
     try:
         # Load CT scan and segmentation
@@ -68,6 +68,7 @@ def display_interactive_viewer(scan, segmentation, scan_path, organ_name):
         slice_data = scan[:, :, selected_slice]
         slice_data = (slice_data - np.min(slice_data)) / (np.max(slice_data) - np.min(slice_data))
         slice_data = np.rot90(slice_data)
+        slice_data = np.flip(slice_data, axis = 1)
 
         st.write(f"Displaying slice {selected_slice}/{num_slices - 1}")
         fig, ax = plt.subplots()
@@ -75,6 +76,7 @@ def display_interactive_viewer(scan, segmentation, scan_path, organ_name):
         if segmentation is not None:
             seg_slice = segmentation[:, :, selected_slice]
             seg_slice = np.rot90(seg_slice)
+            seg_slice = np.flip(seg_slice, axis = 1)
             ax.imshow(seg_slice, cmap="viridis", alpha=0.5)
         ax.axis("off")
         st.pyplot(fig)

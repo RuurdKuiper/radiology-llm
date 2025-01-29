@@ -22,10 +22,20 @@ def main():
 
     viewer_container = st.sidebar.container()
 
+    # Ensure the interactive viewer persists across reruns
+    if "current_scan" in st.session_state and "current_segmentation" in st.session_state:
+        with viewer_container:    
+            display_interactive_viewer(
+                st.session_state["current_scan"],
+                st.session_state["current_segmentation"],
+                st.session_state["current_scan_path"],
+                st.session_state["current_organ"],
+            )
+
     # Get list of available patient folders
     ehr_root = "EHRs"
-    patient_folders = [folder for folder in os.listdir(ehr_root) if folder.startswith("EHR") and os.path.isdir(os.path.join(ehr_root, folder))]
-    patient_ids = sorted([folder.split(" ")[1] for folder in patient_folders])
+    patient_folders = [folder for folder in os.listdir(ehr_root) if os.path.isdir(os.path.join(ehr_root, folder))]
+    patient_ids = sorted(patient_folders)
 
     # Sidebar for Patient Selection
     patient_id = st.sidebar.selectbox("Select Patient", options=patient_ids, index=0)
@@ -71,7 +81,8 @@ def main():
                 "role": "system",
                 "content": (
                     "You are a radiologist's companion, here to answer questions about the patient and assist in the diagnosis if asked to do so. "
-                    "You are also able to call specialized tools for organ segmentation. "
+                    "You are also able to call specialized tools. "
+                    "At the moment, you only have one tool available: an organ segmentation algorithm for abdominal CTs."
                     "If the user requests an organ segmentation, you can call the `segment_organ` function. "
                     "To call this function, output a JSON object in the following structure:\n\n"
                     "{\n"
@@ -82,7 +93,7 @@ def main():
                     "  }\n"
                     "}\n\n"
                     "Where:\n"
-                    "- `<path_to_ct_scan>` is the full path to the CT scan (e.g., 'EHRs/EHR 1/CT 1/ct.nii.gz').\n"
+                    "- `<path_to_ct_scan>` is the full path to the CT scan like 'EHRs/<PATIENT ID>/CT <CT_NUMBER>/ct.nii.gz' (e.g., 'EHRs/1/CT 1/ct.nii.gz', or 'EHRs/2/CT 1/ct.nii.gz').\n"
                     "- `<organ_name>` is the name of the organ to segment (e.g., 'spleen', 'bladder').\n\n"
                     "Once you call the function, the app will execute it and return the result to the user. You will not be able to see it and do not need to comment on it."
                 ),
@@ -91,7 +102,8 @@ def main():
         if ehr_data:
             full_messages.append({"role": "system", "content": f"Patient Information: {ehr_data}"})
         if available_images:
-            full_messages.append({"role": "system", "content": f"Available image types for the patient: {', '.join(available_images)}."})
+            full_messages.append({"role": "system", "content": f"Available images for the patient: {', '.join(available_images)}. If asked about the available images, only mention the ones available here, and not all the ones described the EHR."})
+            print(available_images)
         full_messages.extend(messages)
 
         # Stream assistant response
@@ -101,7 +113,8 @@ def main():
                     model="tgi",
                     messages=full_messages,
                     max_tokens=300,
-                    stream=True
+                    stream=True,
+                    temperature=0,
                 )
                 response_text = st.write_stream(stream)
             except:
@@ -134,15 +147,17 @@ def main():
                         # Call the segmentation function
                         overlay_message, scan, segmentation = segment_organ(scan_path, organ)
                         
-                        # Save the segmentation state in session_state
-                        st.session_state["current_scan"] = scan
-                        st.session_state["current_segmentation"] = segmentation
-                        st.session_state["current_scan_path"] = scan_path
-                        st.session_state["current_organ"] = organ
+                        if scan is not None and segmentation is not None:
+                            # Save the segmentation state in session_state
+                            st.session_state["current_scan"] = scan
+                            st.session_state["current_segmentation"] = segmentation
+                            st.session_state["current_scan_path"] = scan_path
+                            st.session_state["current_organ"] = organ
 
                         messages.append({"role": "assistant", "content": overlay_message})
                         with st.chat_message("assistant"):
                             st.markdown(overlay_message)
+                        st.rerun()
                     else:
                         error_message = "Invalid arguments for function call. Please provide both `ct_path` and `organ`."
                         messages.append({"role": "assistant", "content": error_message})
@@ -152,16 +167,6 @@ def main():
         except json.JSONDecodeError:
             # If no valid JSON is present, just add the plain response
             messages.append({"role": "assistant", "content": response_text})
-
-    # Ensure the interactive viewer persists across reruns
-    if "current_scan" in st.session_state and "current_segmentation" in st.session_state:
-        with viewer_container:    
-            display_interactive_viewer(
-                st.session_state["current_scan"],
-                st.session_state["current_segmentation"],
-                st.session_state["current_scan_path"],
-                st.session_state["current_organ"],
-            )
 
 if __name__ == "__main__":
     main()

@@ -11,7 +11,7 @@ def load_images(patient_id):
     :param patient_id: ID of the patient (e.g., "1").
     :return: A tuple containing available image types and their corresponding middle slices.
     """
-    image_folder = os.path.join("EHRs", f"EHR {patient_id}")
+    image_folder = os.path.join("EHRs", patient_id)
     available_images = []
     images = {}
 
@@ -35,6 +35,7 @@ def load_images(patient_id):
 
                     # Normalize for display
                     slice_data = np.rot90(slice_data)  # Rotate for proper orientation
+                    slice_data = np.flip(slice_data, axis = 1)
                     slice_data = (slice_data - np.min(slice_data)) / (np.max(slice_data) - np.min(slice_data))
 
                     if subfolder not in images:

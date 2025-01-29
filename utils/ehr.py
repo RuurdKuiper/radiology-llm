@@ -8,7 +8,7 @@ def load_ehr_data(patient_id):
     :param patient_id: ID of the patient (e.g., "1").
     :return: A single string containing the concatenated EHR data or an error message.
     """
-    ehr_folder = os.path.join("EHRs", f"EHR {patient_id}")
+    ehr_folder = os.path.join("EHRs", patient_id)
     ehr_texts = []
 
     if not os.path.exists(ehr_folder):
