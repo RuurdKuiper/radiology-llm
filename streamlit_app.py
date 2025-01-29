@@ -96,13 +96,16 @@ def main():
 
         # Stream assistant response
         with st.chat_message("assistant"):
-            stream = client.chat.completions.create(
-                model="tgi",
-                messages=full_messages,
-                max_tokens=300,
-                stream=True
-            )
-            response_text = st.write_stream(stream)
+            try:
+                stream = client.chat.completions.create(
+                    model="tgi",
+                    messages=full_messages,
+                    max_tokens=300,
+                    stream=True
+                )
+                response_text = st.write_stream(stream)
+            except:
+                response_text = "The LLM appears to be offline, probably because it has been idle for more than 15 minutes. It should be starting back up now, please wait 5-10 minutes and try again."
         
         # Add assistant message to the chat history
         messages.append({"role": "assistant", "content": response_text})
