@@ -1,5 +1,4 @@
-EHR 3
-Patient ID: P003
+Patient ID: 3
 Name: David Reed
 Age: 35
 Sex: Male

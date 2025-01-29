@@ -1,5 +1,4 @@
-EHR 2
-Patient ID: P002
+Patient ID: 2
 Name: Maria Lopez
 Age: 42
 Sex: Female
