@@ -63,6 +63,30 @@ def main():
     st.subheader("Chat")
     messages = st.session_state.patient_chats[patient_id]
 
+    # Initialize session state for conversation history per patient
+    if "patient_chats" not in st.session_state:
+        st.session_state.patient_chats = {}
+
+    if patient_id not in st.session_state.patient_chats:
+        st.session_state.patient_chats[patient_id] = []
+
+    messages = st.session_state.patient_chats[patient_id]
+
+    # Add an AI-generated system message at the top of the chat if it's the first message
+    if len(messages) == 0:
+        welcome_message = (
+            "**Welcome to the Radiologist's Companion!**\n\n"
+            "You can ask me about the patient's medical history or available imaging data.\n"
+            "- I can summarize key details from the EHR.\n"
+            "- I can tell you which medical images are available.\n"
+            "- If you'd like an organ segmentation (e.g. spleen, liver, kidney_left, colon, femur_right) on an abdominal CT scan, just ask!\n\n"
+            "**Example Requests:**\n"
+            "- \"What do we know about this patient?\"\n"
+            "- \"Which images are available for this patient?\"\n"
+            "- \"Can you segment the spleen from the CT scan?\"\n"
+        )
+        messages.append({"role": "assistant", "content": welcome_message})
+
     # Display existing chat messages
     for message in messages:
         with st.chat_message(message["role"]):
@@ -99,11 +123,9 @@ def main():
                 ),
             }
         ]
-        if ehr_data:
-            full_messages.append({"role": "system", "content": f"Patient Information: {ehr_data}"})
-        if available_images:
-            full_messages.append({"role": "system", "content": f"Available images for the patient: {', '.join(available_images)}. If asked about the available images, only mention the ones available here, and not all the ones described the EHR."})
-            print(available_images)
+        full_messages.append({"role": "system", "content": f"Patient Information: {ehr_data if ehr_data else 'None'}"})
+        full_messages.append({"role": "system", "content": f"Available images for the patient: {', '.join(available_images) if available_images else 'None'}. If asked about the available images, only mention the ones available here, and not all the ones described the EHR. If no images are shown here, please tell the user."})
+        print(available_images)
         full_messages.extend(messages)
 
         # Stream assistant response
